@@ -35,11 +35,15 @@ The fastest way to lose an account, or a group membership, is to look automated.
 ## Why admin-approval groups are a trap
 - Each post sits in a queue that a few admins work through by hand. Several posts from one person in a short window look like a spam campaign, so admins **decline them, mute the member, or remove them**, and the queue backs up for everyone.
 - **Pending posts are invisible.** It's easy to think a post failed and post again; that's a duplicate in the queue. Check the group's "Your pending posts" (or the post's "Your post is pending" banner) before retrying.
+- **Check approval status each round** on the group's Your content page: the Pending, Published and **Declined** tabs. Declines are silent unless you look.
 - If a previous post is **still pending after a day or more**, set that group to `skip` in `groups.tsv` until it clears. Stacking more posts behind it makes things worse.
 - An approved post can go live hours later, so replies arrive late. Keep checking notifications for it later in the day.
 - **Rules differ per group.** Some ban links, some ban self-promotion, some want a flair or question format. Record each group's rule in `groups.tsv` (name column) or in the profile.
 
 ## Signals to stop and tell the owner
+- Someone asks for the account to be labeled as a bot, or asks for "the operator". Don't reply; flag it; dial back that platform (see `rules.md` → Identity, labels and AI questions).
+- Several "are you a bot?" or "Clanker" replies in a day. Slow down and make replies fewer and more specific.
+- **Declined posts in an approval group.** Check the group's Your content page (`facebook.com/groups/<id>/my_pending_content`) and its **Declined** tab. If promo posts are declined, set the group to `skip` in `groups.tsv` and ask the owner. Repeated declines get members removed.
 - Any warning toast: "rate limited", "we limit how often…", "your post goes against our standards", "action blocked".
 - A post or comment removed by admins, or a "you've been muted" notice.
 - Captchas or "confirm it's you" checks. These are the owner's to handle.

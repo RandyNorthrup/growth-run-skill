@@ -38,6 +38,7 @@ metadata:
 - Facebook groups: see `groups.tsv`. Owner's own groups: <slugs>.
 
 ## Boundaries
+- Identity and labels: <no labels, the agent is the owner's avatar (default) / label these accounts: …>. "Are you a bot?" and operator questions are always skipped and flagged to the owner, never denied.
 - Budget: <$0>. Approval needed for: <contracts, deposits, new accounts, deleting posts, anything paid>.
 - Repos and sites: read-only.
 - Follows: sparing (1k+ followers, clear reason, at most a couple per run).

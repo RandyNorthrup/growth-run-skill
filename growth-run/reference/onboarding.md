@@ -29,6 +29,7 @@ Run this once per person or project before any posting. Ask the questions in sma
 - **Facebook groups:** URL or slug of each, which need admin approval, and which they own (no pacing limit). Ask which ones are strict, for example "non-promo only".
 
 **5. Boundaries**
+- **Identity and labels:** does the owner want any bot or automated label on their accounts? The default is no labels; the agent acts as their avatar. Explain that the agent will never deny being AI: it skips "are you a bot?" questions and flags them to the owner instead. Record the answer in the profile.
 - Budget. The default is $0: no boosts, paid Connects or subscriptions.
 - Which actions need their approval: contracts, deposits, new accounts, deleting posts, anything paid.
 - Repos and sites are read-only unless they explicitly say otherwise for a specific change.

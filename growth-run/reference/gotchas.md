@@ -58,6 +58,8 @@ These are grouped by area. Each one cost real time at least once.
 - **Reddit r/forhire:** needs account age and karma; don't farm karma.
 
 ## Scope and trust
+- **Bot-label requests happen.** Polished, high-volume replies drew "Clanker", "are you a hermes agent?" and "generate a post…" jabs. A Bluesky safety-focused account then asked the "operator" to apply the bot label. The owner chose no labels; the agent didn't reply, flagged it, and dialed back that platform. Follow the identity rules in `rules.md`.
+- **Admins decline promo silently.** A release-announcement post sat in an approval group's Declined tab (4 declined there in total) with no notification. Check the Declined tab each round and stop posting promo to that group.
 - **Never "help" by editing the owner's repos or sites.** One unrequested branch and page duplicated an existing portfolio page and cost a lot of trust. Read-only; describe changes and let the owner make them.
 - **Native file pickers belong to the owner.** If one opens, say so with the exact file and path, and don't touch that page while they use it.
 - **Infrastructure detours eat a session.** Chasing a CI token through permission denials and dashboards instead of asking cost hours. Ask in one line first.
