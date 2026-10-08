@@ -1,0 +1,4 @@
+# key	text	optional link   (one post per line; check lengths with: python bank.py check)
+failloud	Agents should fail loud. A quiet "done" with a skipped test is worse than a red build, because you'll trust it.
+dryrun	Every tool an agent can call should have a dry-run mode. If you can't preview what it's about to do, you can't honestly approve it.
+question1	What's one task you've stopped doing by hand since AI tools got good, and one you'll never hand over?

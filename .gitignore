@@ -1,0 +1,14 @@
+# private per-owner data: never commit
+growth/
+work/
+*.local.*
+growth-profile-*.md
+growth-run-state-*.md
+# generated
+__pycache__/
+*.pyc
+.render-profile/
+details.json
+.doctor_probe.txt
+*.png
+!docs/**/*.png

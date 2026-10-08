@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- Pick NEW fonts and a NEW palette for every carousel (see reference/content.md). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root { --bg: #0f1115; --fg: #f2f2ee; --accent: #c6ff3d; --muted: #8b8f98; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1350px; overflow: hidden; background: var(--bg); color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif; }
+  .slide { display: none; position: relative; width: 1080px; height: 1350px; padding: 140px 96px 120px; }
+  .kicker { font: 500 30px 'JetBrains Mono', monospace; color: var(--accent); letter-spacing: .04em; }
+  h1 { font-size: 104px; line-height: 1.02; font-weight: 700; margin-top: 28px; }
+  h2 { font-size: 72px; line-height: 1.08; font-weight: 700; margin-top: 20px; }
+  p, li { font-size: 40px; line-height: 1.35; color: var(--fg); margin-top: 28px; }
+  .muted { color: var(--muted); }
+  code { font: 500 34px 'JetBrains Mono', monospace; background: #1b1f27; padding: 4px 10px; border-radius: 8px; }
+  .top, .foot { position: absolute; left: 96px; right: 96px; display: flex; justify-content: space-between;
+    font: 500 26px 'JetBrains Mono', monospace; color: var(--muted); }
+  .top { top: 56px; } .foot { bottom: 56px; }
+</style>
+</head>
+<body>
+<!-- One <section class="slide"> per slide. Slide 1 = hook, last = takeaway/question. -->
+<section class="slide">
+  <div class="kicker">TOPIC LABEL</div>
+  <h1>The hook: state the payoff in one line.</h1>
+  <p class="muted">Swipe for N concrete steps →</p>
+</section>
+<section class="slide">
+  <div class="kicker">01</div>
+  <h2>One idea per slide.</h2>
+  <p>Short explanation with one concrete detail, like <code>--flag</code> or a number.</p>
+</section>
+<section class="slide">
+  <div class="kicker">TAKEAWAY</div>
+  <h2>The one-line rule to remember.</h2>
+  <p>End with a question people can answer in the comments.</p>
+</section>
+<script>
+  // Render each slide at index.html#<n> (render_carousel.py does this for you).
+  const HANDLE = '@yourhandle', SERIES = 'Series name';
+  const slides = [...document.querySelectorAll('.slide')], N = slides.length;
+  const n = parseInt(location.hash.slice(1) || '1', 10);
+  slides.forEach((s, i) => {
+    s.style.display = (i + 1 === n) ? 'block' : 'none';
+    s.insertAdjacentHTML('beforeend',
+      `<div class="top"><span>${HANDLE}</span><span>${SERIES}</span><span>${String(i + 1).padStart(2, '0')} / ${String(N).padStart(2, '0')}</span></div>`);
+  });
+</script>
+</body>
+</html>

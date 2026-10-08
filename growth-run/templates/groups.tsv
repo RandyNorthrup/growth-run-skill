@@ -1,0 +1,7 @@
+# slug	name / rules note	mode	min_hours	last_post_utc
+# mode: approval | open | own | strict | skip   (see scripts/pace.py)
+# leave min_hours blank for the default (approval 6, open 4, own 1, strict 4)
+# last_post_utc is filled by: python pace.py groups.tsv --mark <slug>
+examplegroup	Example Group (approval; no links)	approval
+myowngroup	Owner's own group	own
+opengroup123	Open Group (non-promo only)	strict
