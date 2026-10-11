@@ -4,9 +4,9 @@
 groups.tsv columns (tab-separated, # comments allowed):
   slug  name  mode  min_hours  last_post_utc
 mode:
-  approval  admins approve each post -> at most one approval group per round,
-            min_hours since that group's last post (default 6), and never two
-            approval-group posts within APPROVAL_GAP_HOURS of each other
+  approval  admins approve each post -> min_hours since that group's own last
+            post (default 6). Approval is per group: every group has its own
+            admins and queue, so one group never waits on another
   open      posts go live -> min_hours since last post (default 4)
   own       the owner's group -> min_hours (default 1)
   strict    like open, but organic/non-promo posts only
@@ -19,7 +19,6 @@ Usage:
 import datetime as dt
 import sys
 
-APPROVAL_GAP_HOURS = 3.0
 DEFAULTS = {"approval": 6.0, "open": 4.0, "own": 1.0, "strict": 4.0, "skip": 1e9}
 
 
@@ -60,8 +59,6 @@ def main():
                 return
         sys.exit("slug not found: " + sys.argv[3])
     data = [r for kind, r in rows if kind == "row"]
-    approval_times = [parse(r[4]) for r in data if r[2] == "approval" and r[4]]
-    last_approval = max(approval_times) if approval_times else None
     for slug, name, mode, min_h, last in data:
         mode = mode or "open"
         need = float(min_h) if min_h else DEFAULTS.get(mode, 4.0)
@@ -69,11 +66,6 @@ def main():
         since = (now - last_t).total_seconds() / 3600 if last_t else None
         ok = mode != "skip" and (since is None or since >= need)
         why = "" if since is None else f"{since:.1f}h since last"
-        if ok and mode == "approval" and last_approval:
-            gap = (now - last_approval).total_seconds() / 3600
-            if gap < APPROVAL_GAP_HOURS:
-                ok = False
-                why += f"; another approval group posted {gap:.1f}h ago"
         state = "READY" if ok else "wait "
         print(f"{state} {mode:8} {slug:28} need {need:g}h  {why}  {name}")
 

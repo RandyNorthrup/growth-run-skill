@@ -42,7 +42,7 @@ These came from real corrections. Each has a reason, so apply the spirit, not ju
 - **Don't write filenames or words ending in real TLDs** (.md, .ai, .io, .sh, .dev, .app) in posts. They autolink and the preview card shows someone else's site. Check the composer card before posting.
 
 ## Pacing (platform-safe defaults)
-- **Facebook groups needing admin approval:** one per round, at least 6 hours after that group's last post, never two approval groups back-to-back. Groups the owner runs have no limit. Strict groups get non-promo posts only.
+- **Facebook groups needing admin approval:** at least 6 hours after that group's own last post. Approval is per group, so approval groups never wait on each other. Groups the owner runs have no limit. Strict groups get non-promo posts only.
 - **Instagram:** about 2 posts a day, 8+ hours apart, scheduled ahead. Comment replies throttle silently after about 3 in a few minutes (Post does nothing), so stop and come back after about an hour.
 - **X follows:** at most about 12 per 15 minutes; the rate-limit toast appears around 14.
 - **Spread posts** across the day; don't dump a platform's quota in one burst.

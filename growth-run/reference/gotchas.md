@@ -51,6 +51,7 @@ These are grouped by area. Each one cost real time at least once.
   - Sort comments by "Newest" to find new top-level comments.
   - `js_click` expands "View N replies".
   - Approval groups take hours, so pace them with `pace.py`.
+  - Approval is per group, not account-wide. An earlier `pace.py` also made approval groups wait 3 hours on each other, which kept ready groups idle for no benefit.
 - **X:** intent pages load slowly under load, so wait up to 45 s for the post button. Ctrl+Enter sends; wait for the button to disappear.
 - **LinkedIn search:** `sortBy=DD` (date) ignores keywords and returns the same pool of about 100 jobs. Use `sortBy=R` for keyword matches. The guest API needs no login.
 - **Contra:** the "Add work" dialog has no reachable file input, so paste the image. Escape leaves a Draft tile behind; delete it through "...".

@@ -27,13 +27,14 @@ The fastest way to lose an account, or a group membership, is to look automated.
   - Comment replies: after about 3 in a few minutes, Instagram silently drops them, and Post does nothing. Stop, and come back after about an hour.
 - **X:** at most about 12 follows per 15 minutes (the rate-limit toast appears around 14). Keep follows rare anyway.
 - **Facebook groups:**
-  - Use `pace.py` for every group post. Approval groups need 6+ hours since that group's last post, one per round, and never two approval groups back-to-back (a 3-hour gap).
+  - Use `pace.py` for every group post. Approval groups need 6+ hours since that group's own last post. Approval is per group: each group has its own admins and its own queue, so a post in one never delays a post in another.
   - Open groups need about 4 hours.
   - The owner's own group needs about 1 hour.
 - **Burst replies under one post** (10+ replies in a row on a busy thread) are fine when people are talking to the owner. Still vary the wording, and keep each reply specific.
 
 ## Why admin-approval groups are a trap
-- Each post sits in a queue that a few admins work through by hand. Several posts from one person in a short window look like a spam campaign, so admins **decline them, mute the member, or remove them**, and the queue backs up for everyone.
+- Each post sits in a queue that a few admins work through by hand. Several posts from one person in the same group in a short window look like a spam campaign, so admins **decline them, mute the member, or remove them**, and the queue backs up for everyone.
+- **The queue is per group, not account-wide.** A pending or just-approved post in one group means nothing to another group's admins. Don't hold a post back in one approval group because a different one just got a post; that only leaves the second group idle. Give each group its own post, though: the same text pasted into several groups is what reads as a campaign.
 - **Pending posts are invisible.** It's easy to think a post failed and post again; that's a duplicate in the queue. Check the group's "Your pending posts" (or the post's "Your post is pending" banner) before retrying.
 - **Check approval status each round** on the group's Your content page: the Pending, Published and **Declined** tabs. Declines are silent unless you look.
 - If a previous post is **still pending after a day or more**, set that group to `skip` in `groups.tsv` until it clears. Stacking more posts behind it makes things worse.
