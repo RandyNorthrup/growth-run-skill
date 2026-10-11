@@ -5,6 +5,7 @@ Usage: clipimage.py <image-path>
 Windows: uses Pillow + Win32 API if Pillow is installed; otherwise a hidden PowerShell
 (no console window). macOS: osascript. Linux: wl-copy or xclip with the PNG bytes.
 """
+import ctypes
 import io
 import os
 import platform
@@ -13,31 +14,50 @@ import subprocess
 import sys
 
 CREATE_NO_WINDOW = 0x08000000
+CF_DIB = 8
+GMEM_MOVEABLE = 0x0002
+
+
+def _win32():
+    """user32 and kernel32 with prototypes declared.
+
+    Handles are 64-bit on x64 Windows. Without argtypes ctypes passes them as a C int
+    and raises "int too long to convert" as soon as a handle value needs more than 32 bits.
+    """
+    from ctypes import wintypes
+    u32 = ctypes.WinDLL("user32", use_last_error=True)
+    k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    u32.OpenClipboard.argtypes = [wintypes.HWND]
+    u32.OpenClipboard.restype = wintypes.BOOL
+    u32.SetClipboardData.argtypes = [wintypes.UINT, wintypes.HANDLE]
+    u32.SetClipboardData.restype = wintypes.HANDLE
+    k32.GlobalAlloc.argtypes = [wintypes.UINT, ctypes.c_size_t]
+    k32.GlobalAlloc.restype = wintypes.HGLOBAL
+    k32.GlobalLock.argtypes = [wintypes.HGLOBAL]
+    k32.GlobalLock.restype = wintypes.LPVOID
+    k32.GlobalUnlock.argtypes = [wintypes.HGLOBAL]
+    k32.GlobalFree.argtypes = [wintypes.HGLOBAL]
+    k32.GlobalFree.restype = wintypes.HGLOBAL
+    return u32, k32
+
+
+def _global_copy(k32, data):
+    """Copy bytes into a moveable global memory block and return its handle."""
+    h = k32.GlobalAlloc(GMEM_MOVEABLE, len(data))
+    if not h:
+        raise OSError("GlobalAlloc failed")
+    p = k32.GlobalLock(h)
+    if not p:
+        k32.GlobalFree(h)
+        raise OSError("GlobalLock failed")
+    ctypes.memmove(p, data, len(data))
+    k32.GlobalUnlock(h)
+    return h
 
 
 def windows(path):
     try:
         from PIL import Image  # optional dependency
-        import ctypes
-        from ctypes import wintypes
-        img = Image.open(path).convert("RGB")
-        buf = io.BytesIO()
-        img.save(buf, "BMP")
-        dib = buf.getvalue()[14:]  # strip BITMAPFILEHEADER -> CF_DIB
-        u32, k32 = ctypes.WinDLL("user32"), ctypes.WinDLL("kernel32")
-        k32.GlobalAlloc.restype = wintypes.HGLOBAL
-        k32.GlobalLock.restype = wintypes.LPVOID
-        k32.GlobalLock.argtypes = [wintypes.HGLOBAL]
-        u32.SetClipboardData.argtypes = [wintypes.UINT, wintypes.HANDLE]
-        h = k32.GlobalAlloc(0x0002, len(dib))
-        ctypes.memmove(k32.GlobalLock(h), dib, len(dib))
-        k32.GlobalUnlock(h)
-        if not u32.OpenClipboard(None):
-            raise OSError("clipboard busy")
-        u32.EmptyClipboard()
-        u32.SetClipboardData(8, h)  # CF_DIB
-        u32.CloseClipboard()
-        return True
     except ImportError:
         ps = ("Add-Type -AssemblyName System.Windows.Forms,System.Drawing;"
               "[System.Windows.Forms.Clipboard]::SetImage([System.Drawing.Image]::FromFile('%s'))"
@@ -45,6 +65,23 @@ def windows(path):
         r = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-STA", "-Command", ps],
                            capture_output=True, creationflags=CREATE_NO_WINDOW)
         return r.returncode == 0
+    img = Image.open(path).convert("RGB")
+    buf = io.BytesIO()
+    img.save(buf, "BMP")
+    dib = buf.getvalue()[14:]  # strip BITMAPFILEHEADER -> CF_DIB
+    u32, k32 = _win32()
+    h = _global_copy(k32, dib)
+    if not u32.OpenClipboard(None):
+        k32.GlobalFree(h)
+        return False  # clipboard busy
+    try:
+        u32.EmptyClipboard()
+        ok = bool(u32.SetClipboardData(CF_DIB, h))  # on success the clipboard owns h
+    finally:
+        u32.CloseClipboard()
+    if not ok:
+        k32.GlobalFree(h)
+    return ok
 
 
 def main():

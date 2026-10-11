@@ -121,5 +121,19 @@ class TestFbSnap(unittest.TestCase):
         self.assertIn("REPLY e21 Reply by Alan Turing", out)
 
 
+@unittest.skipUnless(sys.platform == "win32", "Win32 global-memory helpers")
+class TestClipImageWin32(unittest.TestCase):
+    def test_global_block_round_trip(self):
+        # Handles are 64-bit on x64 Windows; passing one without declared prototypes
+        # raised "int too long to convert". No clipboard access here.
+        sys.path.insert(0, SCRIPTS)
+        self.addCleanup(sys.path.remove, SCRIPTS)
+        import clipimage
+        _, k32 = clipimage._win32()
+        h = clipimage._global_copy(k32, b"\x00" * 4096)
+        self.assertTrue(h)
+        self.assertFalse(k32.GlobalFree(h))  # NULL means the block was freed
+
+
 if __name__ == "__main__":
     unittest.main()
