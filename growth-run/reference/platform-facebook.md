@@ -6,7 +6,7 @@
 3. Right after posting, run `python pace.py groups.tsv --mark <slug>`.
 
 Set up `groups.tsv` from `templates/groups.tsv` during onboarding. The rules it enforces:
-- **Approval groups** (admins approve each post): one per round, at least 6 hours since that group's last post, and never two approval groups back-to-back. Posting too fast backs up the queue and looks suspicious. After posting, a toast says "submitted to group admins for approval"; the post shows "Your post is pending".
+- **Approval groups** (admins approve each post): at least 6 hours since that group's own last post. Each approval group is paced on its own clock, because approval is per group; several can be READY in the same round. Posting too fast inside one group backs up its queue and looks suspicious. After posting, a toast says "submitted to group admins for approval"; the post shows "Your post is pending".
 - If an old post is still stuck pending in a group, skip that group.
 - **The owner's own groups:** no limit; post there whenever there's good material.
 - **Strict groups** (for example "non-promo only"): organic questions and discussion only.

@@ -81,7 +81,7 @@ The rules in [`anti-spam.md`](growth-run/reference/anti-spam.md) and [`rules.md`
 **Timing**
 - Actions are spread across the day. Instagram gets about 2 posts a day, 8+ hours apart. X follows stay under the rate limit.
 - `pace.py` enforces Facebook group cooldowns:
-  - Admin-approval groups get 6+ hours since that group's last post, one per round, and never two back-to-back.
+  - Admin-approval groups get 6+ hours since that group's own last post. Each group is paced separately, because approval is per group.
   - Groups with a stuck pending post are skipped.
   - The owner's own groups can post freely.
 

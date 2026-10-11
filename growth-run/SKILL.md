@@ -31,7 +31,7 @@ They override convenience. In short:
 - **The agent is the owner's avatar.** No bot labels unless the owner says so, but **never deny being AI and never claim to be human**: skip "are you a bot?" and operator or label requests, flag them, and dial that platform back.
 - **Follow sparingly.** The goal is gaining followers, not following.
 - **About 1 in 4 posts** is self-promotion. Organic replies carry no links.
-- **Pace Facebook groups** with `pace.py`. Admin-approval groups get at least 6 hours, never back-to-back.
+- **Pace Facebook groups** with `pace.py`. Admin-approval groups get at least 6 hours each, on their own clock; approval is per group.
 - **Never touch the owner's tabs.** Announce any native dialog. Use one browser worker at a time.
 - **Run silently.** Helpers never pop console windows; use the Python scripts, not ad-hoc PowerShell or cmd.
 - **Ask before infrastructure fights** such as credentials or settings that live only in a dashboard.

@@ -49,13 +49,17 @@ class TestPace(unittest.TestCase):
         p = self.write([["appr", "Approval", "approval", "", self.ago(7)]])
         self.assertIn("READY", run("pace.py", p).stdout)
 
-    def test_no_back_to_back_approval_groups(self):
+    def test_approval_groups_pace_independently(self):
+        # Approval is per group: a fresh post in a1 must not hold back a2 or a3.
         p = self.write([["a1", "A1", "approval", "", self.ago(1)],
-                        ["a2", "A2", "approval", "", ""]])
+                        ["a2", "A2", "approval", "", ""],
+                        ["a3", "A3", "approval", "", self.ago(7)]])
         lines = run("pace.py", p).stdout.splitlines()
-        a2 = next(l for l in lines if " a2 " in l)
-        self.assertTrue(a2.startswith("wait"), a2)
-        self.assertIn("another approval group", a2)
+        self.assertTrue(next(l for l in lines if " a1 " in l).startswith("wait"))
+        for slug in ("a2", "a3"):
+            line = next(l for l in lines if " %s " % slug in l)
+            self.assertTrue(line.startswith("READY"), line)
+            self.assertNotIn("another approval group", line)
 
     def test_own_group_short_cooldown_and_skip(self):
         p = self.write([["mine", "Mine", "own", "", self.ago(1.5)],
